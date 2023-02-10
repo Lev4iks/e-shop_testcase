@@ -1,51 +1,35 @@
-import uuid
-
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, VARCHAR, INTEGER
+from sqlalchemy.dialects.postgresql import VARCHAR, INTEGER
 from app.database import Base
 
 
-class User(Base):
-    __tablename__ = "user"
+class Customer(Base):
+    __tablename__ = "customer"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = Column(VARCHAR(length=128), nullable=False)
-
-
-class Brand(Base):
-    __tablename__ = "brand"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = Column(VARCHAR(length=128), nullable=False)
-
-
-class Manufacturer(Base):
-    __tablename__ = "manufacturer"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(INTEGER(), primary_key=True, index=True)
     name = Column(VARCHAR(length=128), nullable=False)
 
 
 class Product(Base):
     __tablename__ = "product"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(INTEGER(), primary_key=True, index=True)
     name = Column(VARCHAR(length=128), nullable=False)
-    brand_id = Column(UUID(), ForeignKey("brand.id"), nullable=False)
-    manufacturer_id = Column(UUID(), ForeignKey("manufacturer.id"), nullable=False)
+    brand = Column(VARCHAR(length=128), nullable=False)
+    manufacturer = Column(VARCHAR(length=128), nullable=False)
     price = Column((INTEGER()), default=0, nullable=False)
 
 
 class Cart(Base):
     __tablename__ = "cart"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(), ForeignKey("user.id"), nullable=False)
+    id = Column(INTEGER(), primary_key=True, index=True)
+    customer_id = Column(INTEGER(), ForeignKey("customer.id"), nullable=False)
 
 
 class Cart_Product(Base):
     __tablename__ = "cart_product"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    cart_id = Column(UUID(), ForeignKey("cart.id"), nullable=False)
-    product_id = Column(UUID(), ForeignKey("product.id"), nullable=False)
+    id = Column(INTEGER(), primary_key=True, index=True)
+    cart_id = Column(INTEGER(), ForeignKey("cart.id"), nullable=False)
+    product_id = Column(INTEGER(), ForeignKey("product.id"), nullable=False)
