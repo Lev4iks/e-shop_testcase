@@ -1,25 +1,24 @@
-from logging import getLogger
-
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+from loguru import logger
 
 from app import services
-from app.schemas import ShowCustomer, CreateCustomer, ShowProduct, FiltersProduct, CreateProduct
+from app.schemas import (ShowCustomer, CreateCustomer, ShowProduct,
+                         FiltersProduct, CreateProduct, ShowCart, AddRemoveProductFromCart)
 from app.database import get_db_session
-
-logger = getLogger(__name__)
 
 customer_router = APIRouter()
 product_router = APIRouter()
+cart_router = APIRouter()
 
 
 @customer_router.get("/", response_model=ShowCustomer)
 async def get_customer_by_id(customer_id: int, db_session: AsyncSession = Depends(get_db_session)) -> ShowCustomer:
     customer = await services.get_customer_by_id(customer_id, db_session)
-    if customer is None:
+    if not customer:
         raise HTTPException(status_code=404, detail=f"Customer with id {customer_id} not found.")
     return customer
 
@@ -58,3 +57,40 @@ async def get_product_by_id(product_id: int,
     if product is None:
         raise HTTPException(status_code=404, detail=f"Product with id {product_id} not found.")
     return product
+
+
+@cart_router.get("/", response_model=ShowCart)
+async def get_cart_by_customer_id(customer_id: int,
+                                  db_session: AsyncSession = Depends(get_db_session)) -> ShowCart:
+    if not await services.get_customer_by_id(customer_id, db_session):
+        raise HTTPException(status_code=404, detail=f"Customer with id {customer_id} not found.")
+    cart = await services.get_cart_by_customer_id(customer_id, db_session)
+    return cart
+
+
+@cart_router.post("/", response_model=ShowCart)
+async def add_product_into_cart(body: AddRemoveProductFromCart = Depends(AddRemoveProductFromCart),
+                                db_session: AsyncSession = Depends(get_db_session)) -> ShowCart:
+    if not await services.get_customer_by_id(body.customer_id, db_session):
+        raise HTTPException(status_code=404, detail=f"Customer with id {body.customer_id} not found.")
+    if not await services.get_product_by_id(body.product_id, db_session):
+        raise HTTPException(status_code=404, detail=f"Product with id {body.customer_id} not found.")
+    try:
+        return await services.add_product_into_cart(body, db_session)
+    except IntegrityError as err:
+        logger.error(err)
+        raise HTTPException(status_code=503, detail=f"Database error: {err}")
+
+
+@cart_router.delete("/", response_model=ShowCart)
+async def remove_product_from_cart(body: AddRemoveProductFromCart = Depends(AddRemoveProductFromCart),
+                                   db_session: AsyncSession = Depends(get_db_session)) -> ShowCart:
+    if not await services.get_customer_by_id(body.customer_id, db_session):
+        raise HTTPException(status_code=404, detail=f"Customer with id {body.customer_id} not found.")
+    if not await services.get_product_by_id(body.product_id, db_session):
+        raise HTTPException(status_code=404, detail=f"Product with id {body.customer_id} not found.")
+    try:
+        return await services.remove_product_from_cart(body, db_session)
+    except IntegrityError as err:
+        logger.error(err)
+        raise HTTPException(status_code=503, detail=f"Database error: {err}")

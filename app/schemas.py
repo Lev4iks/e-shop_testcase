@@ -1,7 +1,5 @@
 import re
 
-from typing import Union
-
 from fastapi import HTTPException
 from pydantic import BaseModel
 from pydantic import validator
@@ -27,7 +25,7 @@ class CreateCustomer(BaseModel):
         if not LETTER_MATCH_PATTERN.match(value):
             raise HTTPException(
                 status_code=422,
-                detail="Name should contains only letters"
+                detail="name should contains only letters"
             )
         return value
 
@@ -48,10 +46,10 @@ class CreateProduct(BaseModel):
 
 
 class FiltersProduct(BaseModel):
-    name: Union[str, None] = None
-    price: Union[int, None] = None
-    order_by: Union[str, None] = None
-    desc: Union[bool, None] = None
+    name: str = None
+    price: int = None
+    order_by: str = None
+    desc: bool = None
 
     @validator("order_by")
     def validate_order_by(cls, value):
@@ -63,3 +61,32 @@ class FiltersProduct(BaseModel):
                 )
             return value.lower()
         return value
+
+
+class AddRemoveProductFromCart(BaseModel):
+    customer_id: int
+    product_id: int
+    count: int
+
+    @validator("count")
+    def validate_count(cls, value):
+        if value < 1:
+            raise HTTPException(
+                status_code=422,
+                detail="count can't be less then 1"
+            )
+        return value
+
+
+class ProductInCart(TunedModel):
+    product_id: int
+    name: str
+    sub_total_count: int
+    sub_total_price: int
+
+
+class ShowCart(TunedModel):
+    customer_id: int
+    products: list[ProductInCart]
+    total_count: int
+    total_price: int

@@ -5,12 +5,13 @@ from fastapi import FastAPI, Depends
 from fastapi.routing import APIRouter
 
 from app.database import init_models, get_db_session
-from app.routers import customer_router, product_router
+from app.routers import customer_router, product_router, cart_router
 
 app = FastAPI(title="e-shop")
 main_api_router = APIRouter(dependencies=[Depends(get_db_session)])
 main_api_router.include_router(customer_router, prefix="/customers", tags=["customers"])
 main_api_router.include_router(product_router, prefix="/products", tags=["products"])
+main_api_router.include_router(cart_router, prefix="/cart", tags=["cart"])
 app.include_router(main_api_router, prefix="/api", tags=["api"])
 
 
