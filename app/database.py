@@ -11,9 +11,7 @@ POSTGRES_URL = f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRE
                f"@{settings.POSTGRES_HOST}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}"
 
 engine = create_async_engine(
-    POSTGRES_URL,
-    future=True,
-    echo=True,
+    POSTGRES_URL
 )
 async_session = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
