@@ -4,7 +4,8 @@ import uvicorn
 from fastapi import FastAPI, Depends
 from fastapi.routing import APIRouter
 
-from app.database import init_models, get_db_session
+from app.config import insert_start_data
+from app.database import init_models, get_db_session, init_start_data
 from app.routers import customer_router, product_router, cart_router
 
 app = FastAPI(title="e-shop")
@@ -17,8 +18,9 @@ app.include_router(main_api_router, prefix="/api", tags=["api"])
 
 def main():
     asyncio.get_event_loop().run_until_complete(init_models())
-    asyncio.gather()
-    uvicorn.run('app.main:app', host="127.0.0.1", port=8000, reload=True)
+    if insert_start_data:
+        asyncio.get_event_loop().run_until_complete(init_start_data())
+    uvicorn.run('main:app', host="127.0.0.1", port=8000, reload=True)
 
 
 if __name__ == "__main__":

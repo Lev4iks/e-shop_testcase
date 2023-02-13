@@ -1,51 +1,58 @@
-[
-  {
-    "product_id": 1,
-    "name": "Смартфон Apple iPhone 13 Pro",
-    "brand": "Apple",
-    "manufacturer": "China",
-    "price": 78000
-  },
-  {
-    "product_id": 2,
-    "name": "Смартфон Apple iPhone 14",
-    "brand": "Apple",
-    "manufacturer": "China",
-    "price": 84000
-  },
-  {
-    "product_id": 3,
-    "name": "Смартфон Apple iPhone 14 Pro",
-    "brand": "Apple",
-    "manufacturer": "Taiwan",
-    "price": 98800
-  },
-  {
-    "product_id": 4,
-    "name": "Smartphone Samsung Galaxy S23 Ultra",
-    "brand": "Samsung ",
-    "manufacturer": "China",
-    "price": 125100
-  },
-  {
-    "product_id": 5,
-    "name": "Smartphone Samsung Galaxy S22",
-    "brand": "Samsung ",
-    "manufacturer": "China",
-    "price": 83999
-  },
-  {
-    "product_id": 6,
-    "name": "Smartphone Xiaomi POCO X5 5G",
-    "brand": "Xiaomi",
-    "manufacturer": "China",
-    "price": 20000
-  },
-  {
-    "product_id": 7,
-    "name": "Smartphone Xiaomi POCO X4",
-    "brand": "Xiaomi",
-    "manufacturer": "China",
-    "price": 15400
-  }
-]
+{
+  "products": [
+    {
+      "name": "Smartphone Apple iPhone 13 Pro",
+      "brand": "Apple",
+      "manufacturer": "China",
+      "price": 78000
+    },
+    {
+      "name": "Smartphone Apple iPhone 14",
+      "brand": "Apple",
+      "manufacturer": "USA",
+      "price": 84000
+    },
+    {
+      "name": "Smartphone Apple iPhone 14 Pro",
+      "brand": "Apple",
+      "manufacturer": "Taiwan",
+      "price": 98800
+    },
+    {
+      "name": "Smartphone Samsung Galaxy S23 Ultra",
+      "brand": "Samsung ",
+      "manufacturer": "China",
+      "price": 125100
+    },
+    {
+      "name": "Smartphone Samsung Galaxy S22",
+      "brand": "Samsung ",
+      "manufacturer": "China",
+      "price": 83999
+    },
+    {
+      "name": "Smartphone Xiaomi POCO X5 5G",
+      "brand": "Xiaomi",
+      "manufacturer": "China",
+      "price": 20000
+    },
+    {
+      "name": "Smartphone Xiaomi POCO X4",
+      "brand": "Xiaomi",
+      "manufacturer": "China",
+      "price": 15400
+    },
+    {
+      "name": "Smartphone Samsung Galaxy S22",
+      "brand": "Samsung",
+      "manufacturer": "USA",
+      "price": 56000
+    }
+  ],
+  "customers": [
+    {
+      "customer_id": 371,
+      "name": "Test User"
+    }
+  ]
+}

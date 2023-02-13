@@ -1,6 +1,8 @@
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy.dialects.postgresql import VARCHAR, INTEGER
-from app.database import Base
+from sqlalchemy.dialects.postgresql import VARCHAR, INTEGER, REAL
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
 
 
 class Customer(Base):
@@ -17,7 +19,7 @@ class Product(Base):
     name = Column(VARCHAR(length=128), nullable=False)
     brand = Column(VARCHAR(length=128), nullable=False)
     manufacturer = Column(VARCHAR(length=128), nullable=False)
-    price = Column((INTEGER()), default=0, nullable=False)
+    price = Column((REAL()), default=0, nullable=False)
 
 
 class Cart(Base):
